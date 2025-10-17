@@ -1,0 +1,82 @@
+<div class="chat-container">
+  <div class="chat-list-container">
+    <div class="user-details">
+      <h2 class="header-text">UserName</h2>
+      <button type="button" class="btn">
+        <span class="icon-container">
+          <lucide-angular [img]="sendMessage"></lucide-angular>
+        </span>
+      </button>
+    </div>
+    <form class="form">
+      <span class="icon-container">
+        <lucide-angular [img]="search"></lucide-angular>
+      </span>
+      <input type="text" name="" id="" class="form-control" placeholder="Search" />
+    </form>
+    <ul class="user-notes-list">
+      <li class="note-item"></li>
+      <li class="note-item"></li>
+      <li class="note-item"></li>
+    </ul>
+    <h2 class="secondary-text">Messages</h2>
+    <ul class="chat-list">
+      @for(chat of chatList; track chat.id){
+      <li class="chat-item">
+        <a class="chat-link" [class]="chat.active ? 'active' : ''">
+          <span class="img-container"> </span>
+          <h2 class="name">{{ chat.name }}</h2>
+          <p class="message">{{ chat.message }}</p>
+        </a>
+      </li>
+      }
+    </ul>
+  </div>
+  <div class="chat-content">
+    <header class="chat-header">
+      <div class="chat-user">
+        <span class="img-container"></span>
+        <h2 class="name">Chat User</h2>
+        <h4 class="user_name">chatUser</h4>
+      </div>
+      <div class="chat-user-actions">
+        <button type="button" class="">
+          <span class="icon-container">
+            <lucide-angular [img]="phone"></lucide-angular>
+          </span>
+        </button>
+        <button type="button" class="">
+          <span class="icon-container">
+            <lucide-angular [img]="video"></lucide-angular>
+          </span>
+        </button>
+        <button type="button" class="">
+          <span class="icon-container">
+            <lucide-angular [img]="info"></lucide-angular>
+          </span>
+        </button>
+      </div>
+    </header>
+    <ul class="chat-messages-list">
+      @for(message of chatMessagesList; track message.id){
+      <li
+        class="message-item"
+        [class]="message.type == 'received' ? 'justify-start' : 'justify-end'"
+      >
+        @if(message.type == 'received'){
+        <span class="img-container"></span>
+        }
+        <p class="message">{{ message.message }}</p>
+      </li>
+      }
+    </ul>
+    <div class="chat-input">
+      <form class="form">
+        <span class="icon-container smile">
+          <lucide-angular [img]="emoji"></lucide-angular>
+        </span>
+        <input type="text" name="" id="" placeholder="Message" />
+      </form>
+    </div>
+  </div>
+</div>
