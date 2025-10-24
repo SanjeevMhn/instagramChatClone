@@ -1,19 +1,48 @@
-import { Component } from '@angular/core';
-import { Info, LucideAngularModule, Phone, Search, Smile, SquarePen, Video } from 'lucide-angular';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+  WritableSignal,
+} from '@angular/core';
+import {
+  Info,
+  LucideAngularModule,
+  Phone,
+  Reply,
+  Search,
+  Smile,
+  SquarePen,
+  Video,
+} from 'lucide-angular';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Emoji } from '../../services/emoji/emoji';
+import { ChatMessageItem } from "../../components/chat-message-item/chat-message-item";
+
+export type ChatMessageItemType = {
+  id: number;
+  name: string;
+  user_img: string;
+  message: string;
+  type: 'sent' | 'received';
+};
 
 @Component({
   selector: 'app-chat',
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, ReactiveFormsModule, ChatMessageItem],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
-export class Chat {
+export class Chat implements AfterViewChecked {
   search = Search;
   sendMessage = SquarePen;
   phone = Phone;
   video = Video;
   info = Info;
   emoji = Smile;
+  reply = Reply;
 
   chatList: Array<{
     id: number;
@@ -52,13 +81,7 @@ export class Chat {
     },
   ];
 
-  chatMessagesList: Array<{
-    id: number;
-    name: string;
-    user_img: string;
-    message: string;
-    type: 'sent' | 'received';
-  }> = [
+  chatMessagesList: WritableSignal<Array<ChatMessageItemType>> = signal([
     {
       id: 1,
       name: '',
@@ -87,5 +110,49 @@ export class Chat {
       message: 'Great lets meet near 5th Avenue,',
       type: 'sent',
     },
-  ];
+  ]);
+
+  chatForm: FormGroup = new FormGroup({
+    message: new FormControl('', [Validators.required]),
+  });
+
+  @ViewChild('messageList', { static: false }) messageList!: ElementRef<HTMLUListElement>;
+  messageListHeight!: number;
+
+  emojiService = inject(Emoji);
+
+  onChatSend() {
+    if (this.chatForm.invalid) {
+      this.chatForm.markAllAsTouched();
+      return;
+    }
+
+    this.chatMessagesList.update((val) => [
+      ...val,
+      {
+        id: this.chatMessagesList().length + 1,
+        name: '',
+        user_img: '',
+        message: this.chatForm.get('message')?.value,
+        type: 'sent',
+      },
+    ]);
+
+    this.messageListHeight = this.messageList.nativeElement.scrollHeight;
+
+    this.chatForm.reset();
+  }
+
+  ngAfterViewChecked(): void {
+    if (
+      this.messageListHeight !== this.messageList.nativeElement.scrollHeight &&
+      this.messageList.nativeElement.scrollHeight !==
+        this.messageList.nativeElement.scrollTop + this.messageList.nativeElement.offsetHeight
+    ) {
+      this.messageList.nativeElement.scrollTo(0, this.messageList.nativeElement.scrollHeight);
+    }
+  }
+
+
+  getEmojis() {}
 }

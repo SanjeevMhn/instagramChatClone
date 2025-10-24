@@ -1,0 +1,22 @@
+<li class="message-item" [class]="message()!.type == 'received' ? 'justify-start' : 'justify-end'" >
+  @if(message()!.type == 'received'){
+  <span class="img-container"></span>
+  }
+  <p class="message">{{ message()!.message }}</p>
+  <div class="actions">
+    <div class="emoji-btn">
+      <button type="button" class="icon-container react" (click)="getBaseEmojis()">
+        <lucide-angular [img]="emoji"></lucide-angular>
+      </button>
+      <ul class="base-emoji-list" [class]="showBaseEmojiList ? 'show' : 'hide'" >
+        @for(emoji of baseEmojiList; track $index){
+        <li class="base-emoji-item" [style.--emoji-code]="`'${emoji}'`"></li>
+        }
+      </ul>
+    </div>
+
+    <button type="button" class="icon-container reply">
+      <lucide-angular [img]="reply"></lucide-angular>
+    </button>
+  </div>
+</li>

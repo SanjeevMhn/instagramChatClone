@@ -1,0 +1,105 @@
+.message-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  &.justify-start {
+    justify-content: start;
+    .actions{
+        .emoji-btn{
+            .base-emoji-list{
+                left: 0;
+            }
+        }
+    }
+  }
+  &.justify-end {
+    justify-content: end;
+    .actions {
+      order: 1;
+      .emoji-btn{
+        .base-emoji-list{
+            right: 0;
+        }
+      }
+      .react {
+        order: 2;
+      }
+      .reply {
+        order: 1;
+      }
+    }
+    .message {
+      order: 2;
+    }
+  }
+  .img-container {
+    --size: 2.8em;
+    width: var(--size);
+    height: var(--size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #ddd499;
+  }
+  .message {
+    padding: 0.55em;
+    border-radius: 1.5em;
+    font-size: 1.6em;
+    color: #fff;
+    background-color: var(--accent);
+    max-width: 50vw;
+  }
+  .actions {
+    display: none;
+    gap: 0.5em;
+    .icon-container {
+      --size: 2em;
+    }
+    .emoji-btn {
+      position: relative;
+      .base-emoji-list {
+        padding: 1em 1.4em;
+        border-radius: 100vh;
+        background-color: var(--border-primary);
+        gap: 0.5em;
+        position: absolute;
+        list-style-type: none;
+        z-index: 999;
+        &.show {
+          display: flex;
+        }
+        &.hide {
+          display: none;
+        }
+        .base-emoji-item {
+          position: relative;
+          --size: 3.2em;
+          width: var(--size);
+          aspect-ratio: 1 / 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:after {
+            content: var(--emoji-code, '');
+            position: absolute;
+            font-size: var(--size);
+          }
+          &:hover{
+            &:after{
+                scale: 1.12;
+                transition: scale 200ms ease-in;
+            }
+          }
+        }
+      }
+    }
+  }
+  &:hover,
+  &:has(.actions .emoji-btn .base-emoji-list.show) {
+    .actions {
+      display: flex;
+    }
+  }
+}

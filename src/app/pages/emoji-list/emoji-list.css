@@ -1,0 +1,24 @@
+.emoji-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(12em, 100%), 1fr));
+    gap: 1.2em;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 1em;
+}
+.emoji-item{
+    padding: 1.2em;
+    border: 2px solid var(--border-primary);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --size: 2.4em;
+    &:after{
+        content: var(--emoji-code, '');
+        position: absolute;
+        font-size: var(--size);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

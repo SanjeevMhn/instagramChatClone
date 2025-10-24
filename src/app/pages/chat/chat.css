@@ -160,34 +160,7 @@
       flex-direction: column;
       gap: 1.2em;
       height: calc(100vh - 15.5em);
-      .message-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        &.justify-start{
-          justify-content: start;
-        }
-        &.justify-end{
-          justify-content: end;
-        }
-        .img-container {
-          --size: 2.8em;
-          width: var(--size);
-          height: var(--size);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          background-color: #ddd499;
-        }
-        .message {
-          padding: 0.5em;
-          border-radius: 10em;
-          font-size: 1.6em;
-          color: #fff;
-          background-color: var(--accent);
-        }
-      }
+     
     }
     .chat-input {
       padding: 2em 0;

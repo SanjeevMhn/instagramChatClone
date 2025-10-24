@@ -1,0 +1,11 @@
+@if(emojiList | async; as emojis){ 
+    <ul class="emoji-list">
+        @if(emojis.length > 0){ 
+            @for(emoji of emojis;track emoji){
+                <li class="emoji-item" [style.--emoji-code]="`'${emoji.codePoint}'`"></li>
+            } 
+        } 
+    </ul>
+}@else {
+  <h2 class="loading">Loading...</h2>
+}

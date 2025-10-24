@@ -57,25 +57,17 @@
         </button>
       </div>
     </header>
-    <ul class="chat-messages-list">
-      @for(message of chatMessagesList; track message.id){
-      <li
-        class="message-item"
-        [class]="message.type == 'received' ? 'justify-start' : 'justify-end'"
-      >
-        @if(message.type == 'received'){
-        <span class="img-container"></span>
-        }
-        <p class="message">{{ message.message }}</p>
-      </li>
+    <ul class="chat-messages-list" #messageList>
+      @for(message of chatMessagesList(); track message.id){
+        <app-chat-message-item [message]="message" />
       }
     </ul>
     <div class="chat-input">
-      <form class="form">
+      <form [formGroup]="chatForm" class="form" (submit)="onChatSend()">
         <span class="icon-container smile">
           <lucide-angular [img]="emoji"></lucide-angular>
         </span>
-        <input type="text" name="" id="" placeholder="Message" />
+        <input type="text" name="" id="" placeholder="Message" formControlName="message" />
       </form>
     </div>
   </div>
