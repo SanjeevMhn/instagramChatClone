@@ -39,7 +39,7 @@ export type ChatMessageItemType = {
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
-export class Chat implements AfterViewChecked {
+export class Chat {
   search = Search;
   sendMessage = SquarePen;
   phone = Phone;
@@ -173,16 +173,21 @@ export class Chat implements AfterViewChecked {
 
     this.chatForm.reset();
     this.messageReply = undefined;
+
+    this.scrollMessageListToLast()
   }
 
-  ngAfterViewChecked(): void {
-    if (
-      this.messageListHeight !== this.messageList.nativeElement.scrollHeight &&
-      this.messageList.nativeElement.scrollHeight !==
-        this.messageList.nativeElement.scrollTop + this.messageList.nativeElement.offsetHeight
-    ) {
-      this.messageList.nativeElement.scrollTo(0, this.messageList.nativeElement.scrollHeight);
-    }
+  scrollMessageListToLast(){
+    requestAnimationFrame(() => {
+      if (
+        this.messageListHeight !== this.messageList.nativeElement.scrollHeight &&
+        this.messageList.nativeElement.scrollHeight !==
+          this.messageList.nativeElement.scrollTop + this.messageList.nativeElement.offsetHeight
+      ) {
+        this.messageList.nativeElement.scrollTo(0, this.messageList.nativeElement.scrollHeight);
+      }
+    })
+
   }
 
   handleEmojiAction(data: ChatMessageItemType) {

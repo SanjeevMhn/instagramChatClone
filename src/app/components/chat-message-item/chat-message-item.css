@@ -50,6 +50,9 @@
     .message-grp {
       order: 2;
     }
+    .message-grp{
+      align-items: flex-end;
+    }
     .message-emoji {
       right: 0;
     }
