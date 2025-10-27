@@ -158,12 +158,46 @@
       padding: 2em;
       display: flex;
       flex-direction: column;
-      gap: 1.2em;
+      gap: 2em;
       height: calc(100vh - 15.5em);
-     
+
+      &.reply-message {
+        height: calc(100vh - 21em);
+      }
     }
     .chat-input {
       padding: 2em 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      .reply-message-details {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 2.4em;
+        gap: 0.5em;
+        padding: 0 2em;
+        .replying-to {
+          grid-column: 1;
+          grid-row: 1;
+          color: #fff;
+          font-size: 1.6em;
+          .user-name {
+            text-transform: capitalize;
+            font-weight: 600;
+          }
+        }
+        .reply-message {
+          color: var(--text-secondary);
+          font-size: 1.4em;
+          grid-column: 1;
+          grid-row: 2;
+        }
+        button.remove-reply {
+          grid-column: 2;
+          grid-row: 1 / span 2;
+          align-self: center;
+        }
+      }
       .form {
         position: relative;
         display: flex;

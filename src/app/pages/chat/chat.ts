@@ -2,6 +2,7 @@ import {
   AfterViewChecked,
   Component,
   ElementRef,
+  HostListener,
   inject,
   signal,
   ViewChild,
@@ -16,10 +17,11 @@ import {
   Smile,
   SquarePen,
   Video,
+  X,
 } from 'lucide-angular';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Emoji } from '../../services/emoji/emoji';
-import { ChatMessageItem } from "../../components/chat-message-item/chat-message-item";
+import { ChatMessageItem } from '../../components/chat-message-item/chat-message-item';
 
 export type ChatMessageItemType = {
   id: number;
@@ -27,6 +29,8 @@ export type ChatMessageItemType = {
   user_img: string;
   message: string;
   type: 'sent' | 'received';
+  emoji?: string;
+  reply?: ChatMessageItemType;
 };
 
 @Component({
@@ -43,6 +47,7 @@ export class Chat implements AfterViewChecked {
   info = Info;
   emoji = Smile;
   reply = Reply;
+  close = X;
 
   chatList: Array<{
     id: number;
@@ -110,7 +115,23 @@ export class Chat implements AfterViewChecked {
       message: 'Great lets meet near 5th Avenue,',
       type: 'sent',
     },
+    {
+      id: 5,
+      name: '',
+      user_img: '',
+      message: "Sure thing, I'call you",
+      type: 'received',
+      reply: {
+        id: 4,
+        name: '',
+        user_img: '',
+        message: 'Great lets meet near 5th Avenue,',
+        type: 'sent',
+      },
+    },
   ]);
+
+  messageReply: ChatMessageItemType | undefined;
 
   chatForm: FormGroup = new FormGroup({
     message: new FormControl('', [Validators.required]),
@@ -120,6 +141,15 @@ export class Chat implements AfterViewChecked {
   messageListHeight!: number;
 
   emojiService = inject(Emoji);
+
+  @HostListener('keydown', ['$event'])
+  handleOnEscPressed(event: KeyboardEvent) {
+    if (event.key == 'Escape') {
+      if (this.messageReply) this.messageReply = undefined;
+    }
+  }
+
+  @ViewChild('chatInput', { static: false }) chatInputRef!: ElementRef<HTMLInputElement>;
 
   onChatSend() {
     if (this.chatForm.invalid) {
@@ -135,12 +165,14 @@ export class Chat implements AfterViewChecked {
         user_img: '',
         message: this.chatForm.get('message')?.value,
         type: 'sent',
+        reply: this.messageReply,
       },
     ]);
 
     this.messageListHeight = this.messageList.nativeElement.scrollHeight;
 
     this.chatForm.reset();
+    this.messageReply = undefined;
   }
 
   ngAfterViewChecked(): void {
@@ -153,6 +185,26 @@ export class Chat implements AfterViewChecked {
     }
   }
 
+  handleEmojiAction(data: ChatMessageItemType) {
+    this.chatMessagesList.update((msgs) =>
+      msgs.map((msg) =>
+        msg.id == data.id
+          ? !data.hasOwnProperty('emoji') && msg.hasOwnProperty('emoji')
+            ? {
+                ...data,
+              }
+            : { ...msg, ...data }
+          : msg
+      )
+    );
+  }
 
-  getEmojis() {}
+  handleMessageReply(message: ChatMessageItemType) {
+    this.messageReply = message;
+    this.chatInputRef.nativeElement.focus();
+  }
+
+  removeReplyMessage() {
+    this.messageReply = undefined;
+  }
 }

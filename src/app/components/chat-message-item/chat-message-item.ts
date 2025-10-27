@@ -1,6 +1,6 @@
-import { Component, HostListener, input } from '@angular/core';
+import { Component, EventEmitter, HostListener, input, Output, output } from '@angular/core';
 import { ChatMessageItemType } from '../../pages/chat/chat';
-import { LucideAngularModule, Reply, Smile } from 'lucide-angular';
+import { LucideAngularModule, Plus, Reply, Smile } from 'lucide-angular';
 
 @Component({
   selector: 'app-chat-message-item',
@@ -10,8 +10,12 @@ import { LucideAngularModule, Reply, Smile } from 'lucide-angular';
 })
 export class ChatMessageItem {
   message = input<ChatMessageItemType>();
+  emojiAction = output<ChatMessageItemType>()
+  replyAction = output<ChatMessageItemType>()
+
   emoji = Smile;
   reply = Reply;
+  plus  = Plus
 
   baseEmojiList: Array<string> = ['\\1F497', '\\1F602', '\\1F62E', '\\1F622', '\\1F621', '\\1F44D'];
   showBaseEmojiList = false;
@@ -30,11 +34,8 @@ export class ChatMessageItem {
 
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: PointerEvent) {
-    
     let target = event.target as HTMLElement;
     let parentTarget = target.parentElement?.parentElement;
-
-    console.log(target,parentTarget)
 
     if (
       !target.classList.contains('base-emoji-item') &&
@@ -46,5 +47,29 @@ export class ChatMessageItem {
 
   hideBaseEmojiList() {
     this.showBaseEmojiList = false;
+  }
+
+  addEmoji(emoji: string) {
+    let updatedMessage = this.message();
+    if (updatedMessage) {
+      updatedMessage = {
+        ...updatedMessage,
+        emoji: emoji,
+      };
+      this.emojiAction.emit(updatedMessage);
+    }
+    this.hideBaseEmojiList();
+  }
+
+  removeEmoji(){
+    let oldMessage = this.message()
+    if(oldMessage){
+      let {emoji, ...updatedMessage} = oldMessage
+      this.emojiAction.emit(updatedMessage)
+    }
+  }
+
+  handleReplyMessage(message:ChatMessageItemType){
+    this.replyAction.emit(message)
   }
 }

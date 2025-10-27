@@ -57,17 +57,32 @@
         </button>
       </div>
     </header>
-    <ul class="chat-messages-list" #messageList>
+    <ul class="chat-messages-list" [class]="messageReply ? 'reply-message' : ''" #messageList>
       @for(message of chatMessagesList(); track message.id){
-        <app-chat-message-item [message]="message" />
+        <app-chat-message-item 
+          [message]="message" 
+          (emojiAction)="handleEmojiAction($event)" 
+          (replyAction)="handleMessageReply($event)"
+        />
       }
     </ul>
     <div class="chat-input">
+      @if(messageReply){
+        <div class="reply-message-details">
+          <h2 class="replying-to">
+            Replying to <span class="user-name">{{messageReply.name}}</span>
+          </h2>
+          <p class="reply-message">{{messageReply.message}}</p>
+          <button type="button" class="icon-container remove-reply" (click)="removeReplyMessage()">
+            <lucide-angular [img]="close"></lucide-angular>
+          </button>
+        </div>
+      }
       <form [formGroup]="chatForm" class="form" (submit)="onChatSend()">
         <span class="icon-container smile">
           <lucide-angular [img]="emoji"></lucide-angular>
         </span>
-        <input type="text" name="" id="" placeholder="Message" formControlName="message" />
+        <input type="text" name="" id="" placeholder="Message" formControlName="message" #chatInput />
       </form>
     </div>
   </div>
