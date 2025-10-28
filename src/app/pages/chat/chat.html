@@ -36,8 +36,8 @@
     <header class="chat-header">
       <div class="chat-user">
         <span class="img-container"></span>
-        <h2 class="name">Chat User</h2>
-        <h4 class="user_name">chatUser</h4>
+        <h2 class="name">Julia Garcia</h2>
+        <h4 class="user_name">juliaGarcia</h4>
       </div>
       <div class="chat-user-actions">
         <button type="button" class="">
@@ -57,32 +57,45 @@
         </button>
       </div>
     </header>
-    <ul class="chat-messages-list" [class]="messageReply ? 'reply-message' : ''" #messageList >
+    <ul class="chat-messages-list" [class]="messageReply ? 'reply-message' : ''" [class]="messageEdit ? 'edit-message' : ''" #messageList>
       @for(message of chatMessagesList(); track message.id){
-        <app-chat-message-item 
-          [message]="message" 
-          (emojiAction)="handleEmojiAction($event)" 
-          (replyAction)="handleMessageReply($event)"
-        />
+      <app-chat-message-item
+        [message]="message"
+        (emojiAction)="handleEmojiAction($event)"
+        (replyAction)="handleMessageReply($event)"
+        (editAction)="handleMessageEdit($event)"
+      />
       }
     </ul>
     <div class="chat-input">
       @if(messageReply){
-        <div class="reply-message-details">
-          <h2 class="replying-to">
-            Replying to <span class="user-name">{{messageReply.name}}</span>
-          </h2>
-          <p class="reply-message">{{messageReply.message}}</p>
-          <button type="button" class="icon-container remove-reply" (click)="removeReplyMessage()">
-            <lucide-angular [img]="close"></lucide-angular>
-          </button>
-        </div>
+      <div class="reply-message-details">
+        <h2 class="replying-to">Replying to <span class="user-name">Julia Garcia</span></h2>
+        <p class="reply-message">{{ messageReply.message }}</p>
+        <button type="button" class="icon-container remove-reply" (click)="removeReplyMessage()">
+          <lucide-angular [img]="close"></lucide-angular>
+        </button>
+      </div>
+      } @if(messageEdit){
+      <div class="reply-message-details">
+        <h2 class="replying-to">Editing Message</h2>
+        <button type="button" class="icon-container remove-reply" (click)="removeEditMessage()">
+          <lucide-angular [img]="close"></lucide-angular>
+        </button>
+      </div>
       }
       <form [formGroup]="chatForm" class="form" (submit)="onChatSend()">
         <span class="icon-container smile">
           <lucide-angular [img]="emoji"></lucide-angular>
         </span>
-        <input type="text" name="" id="" placeholder="Message" formControlName="message" #chatInput />
+        <input
+          type="text"
+          name=""
+          id=""
+          placeholder="Message"
+          formControlName="message"
+          #chatInput
+        />
       </form>
     </div>
   </div>

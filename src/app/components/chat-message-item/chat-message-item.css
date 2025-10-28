@@ -6,10 +6,10 @@
   position: relative;
   &.justify-start {
     justify-content: start;
-    .reply-message{
+    .reply-message {
       margin-right: unset;
       margin-left: 3.5em;
-      &:after{
+      &:after {
         left: -1em;
         right: unset;
       }
@@ -18,6 +18,11 @@
       .emoji-btn {
         .base-emoji-list {
           left: 0;
+        }
+      }
+      .more-opts-btn {
+        .more-opts-list {
+          left: 100%;
         }
       }
     }
@@ -30,7 +35,7 @@
     .message-container {
       justify-content: flex-end;
     }
-    
+
     .message {
       order: 2;
     }
@@ -42,6 +47,11 @@
           right: 0;
         }
       }
+      .more-opts-btn {
+        .more-opts-list {
+          right: 2em;
+        }
+      }
       .reply {
         order: 1;
       }
@@ -50,7 +60,7 @@
     .message-grp {
       order: 2;
     }
-    .message-grp{
+    .message-grp {
       align-items: flex-end;
     }
     .message-emoji {
@@ -183,9 +193,49 @@
         }
       }
     }
+    .more-opts-btn {
+      position: relative;
+      .more-opts-list {
+        &.show {
+          display: flex;
+          z-index: 999;
+        }
+        display: none;
+        flex-direction: column;
+        list-style-type: none;
+        position: absolute;
+        top: 100%;
+        .more-opt-item {
+          padding: 0.5em 0.95em;
+          font-size: 1.4em;
+          color: var(--text-primary);
+          background-color: var(--bg-secondary);
+          min-width: 8em;
+          &:hover {
+            background-color: var(--border-primary);
+          }
+
+          &:nth-child(even) {
+            border-bottom: 1px solid var(--border-primary);
+            border-top: 1px solid var(--border-primary);
+          }
+
+          &:first-child {
+            border-top-left-radius: 0.8em;
+            border-top-right-radius: 0.8em;
+          }
+          &:last-child {
+            border-bottom-left-radius: 0.8em;
+            border-bottom-right-radius: 0.8em;
+          }
+        }
+      }
+    }
   }
+
   &:hover,
-  &:has(.actions .emoji-btn .base-emoji-list.show) {
+  &:has(.actions .emoji-btn .base-emoji-list.show),
+  &:has(.actions .more-opts-btn .more-opts-list.show) {
     .actions {
       display: flex;
     }

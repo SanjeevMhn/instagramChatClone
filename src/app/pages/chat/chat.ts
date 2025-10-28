@@ -132,6 +132,7 @@ export class Chat {
   ]);
 
   messageReply: ChatMessageItemType | undefined;
+  messageEdit: ChatMessageItemType | undefined;
 
   chatForm: FormGroup = new FormGroup({
     message: new FormControl('', [Validators.required]),
@@ -146,6 +147,7 @@ export class Chat {
   handleOnEscPressed(event: KeyboardEvent) {
     if (event.key == 'Escape') {
       if (this.messageReply) this.messageReply = undefined;
+      if (this.messageEdit) this.removeEditMessage();
     }
   }
 
@@ -157,27 +159,38 @@ export class Chat {
       return;
     }
 
-    this.chatMessagesList.update((val) => [
-      ...val,
-      {
-        id: this.chatMessagesList().length + 1,
-        name: '',
-        user_img: '',
-        message: this.chatForm.get('message')?.value,
-        type: 'sent',
-        reply: this.messageReply,
-      },
-    ]);
+    if (this.messageEdit !== undefined) {
+      this.chatMessagesList.update((msgs) =>
+        msgs.map((msg) =>
+          msg.id == this.messageEdit!.id
+            ? { ...msg, message: this.chatForm.get('message')?.value }
+            : msg
+        )
+      );
+    } else {
+      this.chatMessagesList.update((val) => [
+        ...val,
+        {
+          id: this.chatMessagesList().length + 1,
+          name: '',
+          user_img: '',
+          message: this.chatForm.get('message')?.value,
+          type: 'sent',
+          reply: this.messageReply,
+        },
+      ]);
+    }
 
     this.messageListHeight = this.messageList.nativeElement.scrollHeight;
 
     this.chatForm.reset();
     this.messageReply = undefined;
+    this.removeEditMessage();
 
-    this.scrollMessageListToLast()
+    this.scrollMessageListToLast();
   }
 
-  scrollMessageListToLast(){
+  scrollMessageListToLast() {
     requestAnimationFrame(() => {
       if (
         this.messageListHeight !== this.messageList.nativeElement.scrollHeight &&
@@ -186,8 +199,7 @@ export class Chat {
       ) {
         this.messageList.nativeElement.scrollTo(0, this.messageList.nativeElement.scrollHeight);
       }
-    })
-
+    });
   }
 
   handleEmojiAction(data: ChatMessageItemType) {
@@ -209,7 +221,18 @@ export class Chat {
     this.chatInputRef.nativeElement.focus();
   }
 
+  handleMessageEdit(message: ChatMessageItemType) {
+    this.messageEdit = message;
+    this.chatForm.patchValue(message);
+    this.chatInputRef.nativeElement.focus();
+  }
+
   removeReplyMessage() {
     this.messageReply = undefined;
+  }
+
+  removeEditMessage() {
+    this.messageEdit = undefined;
+    this.chatForm.reset();
   }
 }

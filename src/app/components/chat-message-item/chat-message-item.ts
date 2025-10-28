@@ -1,6 +1,13 @@
 import { Component, EventEmitter, HostListener, input, Output, output } from '@angular/core';
 import { ChatMessageItemType } from '../../pages/chat/chat';
-import { LucideAngularModule, Plus, Reply, Smile } from 'lucide-angular';
+import {
+  Ellipsis,
+  EllipsisVertical,
+  LucideAngularModule,
+  Plus,
+  Reply,
+  Smile,
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-chat-message-item',
@@ -10,21 +17,25 @@ import { LucideAngularModule, Plus, Reply, Smile } from 'lucide-angular';
 })
 export class ChatMessageItem {
   message = input<ChatMessageItemType>();
-  emojiAction = output<ChatMessageItemType>()
-  replyAction = output<ChatMessageItemType>()
+  emojiAction = output<ChatMessageItemType>();
+  replyAction = output<ChatMessageItemType>();
+  editAction = output<ChatMessageItemType>()
 
   emoji = Smile;
   reply = Reply;
-  plus  = Plus
+  plus = Plus;
+  dots = EllipsisVertical;
 
   baseEmojiList: Array<string> = ['\\1F497', '\\1F602', '\\1F62E', '\\1F622', '\\1F621', '\\1F44D'];
   showBaseEmojiList = false;
+  showMoreOpts = false;
 
   @HostListener('document:keydown', ['$event'])
   handleEscKey(event: KeyboardEvent) {
     if (event.key == 'Escape') {
       event.preventDefault();
       this.showBaseEmojiList = false;
+      this.handleHideMoreOpts();
     }
   }
 
@@ -34,15 +45,31 @@ export class ChatMessageItem {
 
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: PointerEvent) {
-    let target = event.target as HTMLElement;
-    let parentTarget = target.parentElement?.parentElement;
+    requestAnimationFrame(() => {
+      let target = event.target as HTMLElement;
+      let parentTarget = target.parentElement?.parentElement;
 
-    if (
-      !target.classList.contains('base-emoji-item') &&
-      !parentTarget?.classList.contains('react')
-    ) {
-      this.hideBaseEmojiList();
-    }
+      if (
+        !target.classList.contains('more-opt-item') &&
+        !parentTarget?.classList.contains('more-opt-btn')
+      ) {
+        this.handleHideMoreOpts();
+      }
+      if (
+        !target.classList.contains('base-emoji-item') &&
+        !parentTarget?.classList.contains('react')
+      ) {
+        this.hideBaseEmojiList();
+      }
+    });
+  }
+
+  handleShowMoreOpts() {
+    this.showMoreOpts = true;
+  }
+
+  handleHideMoreOpts() {
+    this.showMoreOpts = false;
   }
 
   hideBaseEmojiList() {
@@ -61,15 +88,22 @@ export class ChatMessageItem {
     this.hideBaseEmojiList();
   }
 
-  removeEmoji(){
-    let oldMessage = this.message()
-    if(oldMessage){
-      let {emoji, ...updatedMessage} = oldMessage
-      this.emojiAction.emit(updatedMessage)
+  removeEmoji() {
+    let oldMessage = this.message();
+    if (oldMessage) {
+      let { emoji, ...updatedMessage } = oldMessage;
+      this.emojiAction.emit(updatedMessage);
     }
   }
 
-  handleReplyMessage(message:ChatMessageItemType){
-    this.replyAction.emit(message)
+  handleReplyMessage(message: ChatMessageItemType) {
+    this.replyAction.emit(message);
+  }
+
+  handleEditMessage(message: ChatMessageItemType){
+    this.editAction.emit(message)
+  }
+
+  makeCopy(){
   }
 }

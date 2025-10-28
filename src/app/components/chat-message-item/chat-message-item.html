@@ -1,41 +1,11 @@
-<li class="message-item" [class]="message()!.type == 'received' ? 'justify-start' : 'justify-end'" >
- 
-  @if(message()!.reply){
-    <div class="message-grp">
-      <p class="reply-message">{{message()!.reply?.message}}</p>
-      <div class="message-container">
-        @if(message()!.type == 'received'){
-          <span class="img-container"></span>
-        }
-        <p class="message">{{ message()!.message }}</p>
-        <div class="actions">
-          <div class="emoji-btn">
-            <button type="button" class="icon-container react" (click)="getBaseEmojis()">
-              <lucide-angular [img]="emoji"></lucide-angular>
-            </button>
-            <ul class="base-emoji-list" [class]="showBaseEmojiList ? 'show' : 'hide'" >
-              @for(emoji of baseEmojiList; track $index){
-              <li class="base-emoji-item" [style.--emoji-code]="`'${emoji}'`" (click)="addEmoji(emoji)"></li>
-              }
-              <li class="base-emoji-item">
-                <lucide-angular [img]="plus"></lucide-angular>
-              </li>
-            </ul>
-          </div>
-
-          <button type="button" class="icon-container reply" (click)="handleReplyMessage(message()!)">
-            <lucide-angular [img]="reply"></lucide-angular>
-          </button>
-        </div>
-        @if(message()!.emoji){
-          <button type="button" class="message-emoji" [style.--message-emoji]="`'${message()!.emoji}'`" (click)="removeEmoji()"></button>
-        }
-      </div>
-    </div>
-  }@else {
+<li class="message-item" [class]="message()!.type == 'received' ? 'justify-start' : 'justify-end'">
+  <div class="message-grp">
+    @if(message()!.reply){
+    <p class="reply-message">{{ message()!.reply?.message }}</p>
+    }
     <div class="message-container">
       @if(message()!.type == 'received'){
-        <span class="img-container"></span>
+      <span class="img-container"></span>
       }
       <p class="message">{{ message()!.message }}</p>
       <div class="actions">
@@ -43,9 +13,13 @@
           <button type="button" class="icon-container react" (click)="getBaseEmojis()">
             <lucide-angular [img]="emoji"></lucide-angular>
           </button>
-          <ul class="base-emoji-list" [class]="showBaseEmojiList ? 'show' : 'hide'" >
+          <ul class="base-emoji-list" [class]="showBaseEmojiList ? 'show' : 'hide'">
             @for(emoji of baseEmojiList; track $index){
-            <li class="base-emoji-item" [style.--emoji-code]="`'${emoji}'`" (click)="addEmoji(emoji)"></li>
+            <li
+              class="base-emoji-item"
+              [style.--emoji-code]="`'${emoji}'`"
+              (click)="addEmoji(emoji)"
+            ></li>
             }
             <li class="base-emoji-item">
               <lucide-angular [img]="plus"></lucide-angular>
@@ -56,10 +30,29 @@
         <button type="button" class="icon-container reply" (click)="handleReplyMessage(message()!)">
           <lucide-angular [img]="reply"></lucide-angular>
         </button>
+        <div class="more-opts-btn">
+          <button type="button" class="icon-container reply" (click)="handleShowMoreOpts()">
+            <lucide-angular [img]="dots"></lucide-angular>
+          </button>
+          <ul class="more-opts-list" [class]="showMoreOpts ? 'show' : ''">
+            @if(message()!.type == 'sent'){
+            <li class="more-opt-item" (click)="handleEditMessage(message()!)">Edit</li>
+            <li class="more-opt-item">Unsend</li>
+            } @if(message()!.type == 'received'){
+            <li class="more-opt-item">Forward</li>
+            }
+            <li class="more-opt-item" (click)="makeCopy()">Copy</li>
+          </ul>
+        </div>
       </div>
       @if(message()!.emoji){
-        <button type="button" class="message-emoji" [style.--message-emoji]="`'${message()!.emoji}'`" (click)="removeEmoji()"></button>
+      <button
+        type="button"
+        class="message-emoji"
+        [style.--message-emoji]="`'${message()!.emoji}'`"
+        (click)="removeEmoji()"
+      ></button>
       }
     </div>
-  }
+  </div>
 </li>

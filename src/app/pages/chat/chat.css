@@ -164,6 +164,9 @@
       &.reply-message {
         height: calc(100vh - 21.5em);
       }
+      &.edit-message {
+        height: calc(100vh - 20em);
+      }
     }
     .chat-input {
       padding: 2em 0;
@@ -198,7 +201,7 @@
         button.remove-reply {
           grid-column: 2;
           grid-row: 1 / span 2;
-          &.icon-container{
+          &.icon-container {
             --size: 1.8em;
           }
         }
