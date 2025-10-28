@@ -57,7 +57,9 @@
         </button>
       </div>
     </header>
-    <ul class="chat-messages-list" [class]="messageReply ? 'reply-message' : ''" [class]="messageEdit ? 'edit-message' : ''" #messageList>
+    <ul class="chat-messages-list" 
+      [class]="messageReply ? 'reply-message' : messageEdit ? 'edit-message' : ''" 
+    #messageList>
       @for(message of chatMessagesList(); track message.id){
       <app-chat-message-item
         [message]="message"
