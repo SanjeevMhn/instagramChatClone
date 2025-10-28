@@ -20,6 +20,7 @@ export class ChatMessageItem {
   emojiAction = output<ChatMessageItemType>();
   replyAction = output<ChatMessageItemType>();
   editAction = output<ChatMessageItemType>()
+  showUnsendDialog = output<number>()
 
   emoji = Smile;
   reply = Reply;
@@ -104,6 +105,10 @@ export class ChatMessageItem {
     this.editAction.emit(message)
   }
 
-  makeCopy(){
+  handleShowUnsendDialog(id: number){
+    this.showUnsendDialog.emit(id)
+    this.handleHideMoreOpts()
   }
+
+  makeCopy(){}
 }

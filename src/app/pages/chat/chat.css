@@ -233,3 +233,57 @@
     }
   }
 }
+
+dialog{
+  &.unsend-dialog{
+    width: 100vw;
+    height: 100vh;
+    background-color: unset;
+    &[open]{
+      display: grid;
+      place-items: center;
+      &::backdrop{
+        background-color: rgba(0, 0, 0, 0.72);
+      }
+    }
+    .inner-container{
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-secondary);
+      padding: 2em 0;
+      padding-bottom: 0;
+      border-radius: 2em;
+      color: var(--text-primary);
+      width: min(90%, 45em);
+      gap: 1.2em;
+      .unsend-title{
+        font-size: 1.8em;
+        font-weight: 400;
+        text-align: center;
+        padding: 0 3.2em;
+      }
+      .message{
+        font-size: 1.5em;
+        text-align: center;
+        padding: 0 3.2em;
+      }
+      .actions{
+        display: flex;
+        flex-direction: column;
+        margin-top: 1.5em;
+        button{
+          border-top: 1px solid var(--border-primary);
+          padding: 1em;
+          text-align: center;
+          font-size: 1.6em;
+          color: #fff;
+          &.unsend{
+            color: #d3163c;
+            font-weight: 500;
+          }
+
+        }
+      }
+    }
+  }
+}

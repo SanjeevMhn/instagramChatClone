@@ -57,15 +57,18 @@
         </button>
       </div>
     </header>
-    <ul class="chat-messages-list" 
-      [class]="messageReply ? 'reply-message' : messageEdit ? 'edit-message' : ''" 
-    #messageList>
+    <ul
+      class="chat-messages-list"
+      [class]="messageReply ? 'reply-message' : messageEdit ? 'edit-message' : ''"
+      #messageList
+    >
       @for(message of chatMessagesList(); track message.id){
       <app-chat-message-item
         [message]="message"
         (emojiAction)="handleEmojiAction($event)"
         (replyAction)="handleMessageReply($event)"
         (editAction)="handleMessageEdit($event)"
+        (showUnsendDialog)="handleShowUnsendDialog($event)"
       />
       }
     </ul>
@@ -101,4 +104,15 @@
       </form>
     </div>
   </div>
+
+  <dialog class="unsend-dialog" #unsendDialog>
+    <div class="inner-container">
+      <h2 class="unsend-title">Unsend Message?</h2>
+      <p class="message">Are you sure you want to unsend this message?</p>
+      <div class="actions">
+        <button type="button" class="unsend" (click)="handleUnsendMessage()">Unsend</button>
+        <button type="button" class="cancel" (click)="handleHideUnsendDialog()">Cancel</button>
+      </div>
+    </div>
+  </dialog>
 </div>

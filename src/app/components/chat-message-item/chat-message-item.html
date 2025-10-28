@@ -37,7 +37,7 @@
           <ul class="more-opts-list" [class]="showMoreOpts ? 'show' : ''">
             @if(message()!.type == 'sent'){
             <li class="more-opt-item" (click)="handleEditMessage(message()!)">Edit</li>
-            <li class="more-opt-item">Unsend</li>
+            <li class="more-opt-item" (click)="handleShowUnsendDialog(message()!.id)">Unsend</li>
             } @if(message()!.type == 'received'){
             <li class="more-opt-item">Forward</li>
             }

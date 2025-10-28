@@ -171,7 +171,7 @@ export class Chat {
       this.chatMessagesList.update((val) => [
         ...val,
         {
-          id: this.chatMessagesList().length + 1,
+          id: Date.now(),
           name: '',
           user_img: '',
           message: this.chatForm.get('message')?.value,
@@ -217,11 +217,13 @@ export class Chat {
   }
 
   handleMessageReply(message: ChatMessageItemType) {
+    if (this.messageEdit) this.removeEditMessage();
     this.messageReply = message;
     this.chatInputRef.nativeElement.focus();
   }
 
   handleMessageEdit(message: ChatMessageItemType) {
+    if (this.messageReply) this.removeReplyMessage();
     this.messageEdit = message;
     this.chatForm.patchValue(message);
     this.chatInputRef.nativeElement.focus();
@@ -234,5 +236,28 @@ export class Chat {
   removeEditMessage() {
     this.messageEdit = undefined;
     this.chatForm.reset();
+  }
+
+  @ViewChild('unsendDialog', { static: false }) unsendDialogRef!: ElementRef<HTMLDialogElement>;
+  unsendMessageId: number | undefined;
+  handleShowUnsendDialog(event: number) {
+    if (this.unsendDialogRef) {
+      this.unsendMessageId = event;
+      this.unsendDialogRef.nativeElement.showModal();
+    }
+  }
+
+  handleHideUnsendDialog() {
+    if (this.unsendDialogRef) {
+      this.unsendDialogRef.nativeElement.close();
+    }
+  }
+
+  handleUnsendMessage(){
+    if(this.unsendMessageId){
+      this.chatMessagesList.update(msgs => msgs.filter(msg => msg.id !== this.unsendMessageId))
+      this.handleHideUnsendDialog()
+      this.unsendMessageId = undefined
+    }
   }
 }
