@@ -17,6 +17,18 @@
       </li>
       }
     </ul>
+
+    <ul class="sidenav-list">
+      @for(nav of bottomNavList; track nav.id){
+      <li class="nav-item" [class]="nav.name" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a [routerLink]="nav.link" class="nav-link">
+          <span class="icon-container">
+            <lucide-angular [img]="nav.icon"></lucide-angular>
+          </span>
+        </a>
+      </li>
+      }
+    </ul>
   </aside>
   <main class="main-content">
     <router-outlet />

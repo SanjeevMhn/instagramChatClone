@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 2.5em;
     justify-content: space-between;
     padding: 3.5em 0;
 
@@ -28,6 +29,49 @@
               border: 1px solid var(--border-primary);
             }
           }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .base-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .main-content{
+      order: 1;
+      height: calc(100vh - 5.5em);
+    }
+
+    .sidenav-container {
+      order: 2;
+      background-color: var(--bg-primary);
+      border-right-width: 0;
+      border-top: 1px solid var(--border-primary);
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      padding: 1.5em 2.5em;
+      gap: 1em;
+      .brand{
+        display: none;
+      }
+      .sidenav-list {
+        flex-direction: row;
+        list-style-type: none;
+        gap: 1em;
+        width: 100%;
+        justify-content: space-between;
+        .nav-item{
+          &:nth-child(2),
+          &:nth-child(6){
+            display: none;
+          }
+        }
+        &:last-child{
+          display: none;
         }
       }
     }
