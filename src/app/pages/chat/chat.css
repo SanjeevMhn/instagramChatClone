@@ -319,9 +319,14 @@ dialog {
         }
       }
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .chat-container {
     .chat-content {
       .chat-messages-list {
-        height: calc(100vh - calc(15.5em + 5.5em)); 
+        height: calc(100vh - calc(15.5em + 5.5em));
         &.reply-message {
           height: calc(100vh - calc(21.5em + 5.5em));
         }
@@ -333,13 +338,13 @@ dialog {
   }
 }
 
-@media screen and (max-width: 520px ){
-  .chat-container{
+@media screen and (max-width: 520px) {
+  .chat-container {
     grid-template-columns: 1fr;
-    .chat-list-container{
+    .chat-list-container {
       display: none;
     }
-    .chat-list{
+    .chat-list {
       display: none;
     }
   }

@@ -110,5 +110,7 @@ export class ChatMessageItem {
     this.handleHideMoreOpts()
   }
 
-  makeCopy(){}
+  async makeCopy(message: string){
+    await navigator.clipboard.writeText(message)
+  }
 }

@@ -41,7 +41,7 @@
             } @if(message()!.type == 'received'){
             <li class="more-opt-item">Forward</li>
             }
-            <li class="more-opt-item" (click)="makeCopy()">Copy</li>
+            <li class="more-opt-item" (click)="makeCopy(message()!.message)">Copy</li>
           </ul>
         </div>
       </div>
