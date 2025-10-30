@@ -22,6 +22,8 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Emoji } from '../../services/emoji/emoji';
 import { ChatMessageItem } from '../../components/chat-message-item/chat-message-item';
+import { tap } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 export type ChatMessageItemType = {
   id: number;
@@ -35,7 +37,7 @@ export type ChatMessageItemType = {
 
 @Component({
   selector: 'app-chat',
-  imports: [LucideAngularModule, ReactiveFormsModule, ChatMessageItem],
+  imports: [LucideAngularModule, ReactiveFormsModule, ChatMessageItem, AsyncPipe],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
@@ -48,6 +50,9 @@ export class Chat {
   emoji = Smile;
   reply = Reply;
   close = X;
+
+  emojiService = inject(Emoji)
+  emojiCategories = this.emojiService.getEmojiCategories().pipe(tap(data => console.log(data)))
 
   chatList: Array<{
     id: number;
@@ -141,7 +146,6 @@ export class Chat {
   @ViewChild('messageList', { static: false }) messageList!: ElementRef<HTMLUListElement>;
   messageListHeight!: number;
 
-  emojiService = inject(Emoji);
 
   @HostListener('keydown', ['$event'])
   handleOnEscPressed(event: KeyboardEvent) {

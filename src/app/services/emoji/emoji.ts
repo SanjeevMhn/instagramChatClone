@@ -20,6 +20,10 @@ export class Emoji {
   BASE_URL = environment.EMOJI_API_URL;
   API_TOKEN = environment.EMOJI_API_TOKEN;
 
+  getEmojiCategories(){
+    return this.http.get(`${this.BASE_URL}categories?access_key=${this.API_TOKEN}`)
+  } 
+
   getEmojis() {
     return this.http.get<Array<EmojiType>>(`${this.BASE_URL}emojis?access_key=${this.API_TOKEN}`).pipe(map(data => data.reduce((acc:Array<EmojiType>, curr: EmojiType) => {
       acc.push({
