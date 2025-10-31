@@ -9,7 +9,6 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './emoji-list.css'
 })
 export class EmojiList {
-
   emojiService = inject(Emoji)
   emojiList = this.emojiService.getEmojis()
 }

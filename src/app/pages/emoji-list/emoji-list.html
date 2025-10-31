@@ -2,7 +2,10 @@
     <ul class="emoji-list">
         @if(emojis.length > 0){ 
             @for(emoji of emojis;track emoji){
-                <li class="emoji-item" [style.--emoji-code]="`'${emoji.codePoint}'`"></li>
+                <li class="emoji-item" [style.--emoji-code]="`'${emoji.codePoint}'`">
+
+                    <h2 class="">{{emoji.group}}</h2>
+                </li>
             } 
         } 
     </ul>

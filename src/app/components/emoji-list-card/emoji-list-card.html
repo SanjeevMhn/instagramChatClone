@@ -1,1 +1,24 @@
-<p>emoji-list-card works!</p>
+<div class="emoji-card-container">
+    <form class="search-emoji-form">
+        <input type="text" name="" id="" class="form-control" placeholder="Search">
+    </form>
+    <div class="active-emoji-category-container">
+        <h2 class="active-emoji-category-name">
+            @if(activeCategory | async; as category){
+                {{category | kebabCaseToText}}
+            }
+        </h2>
+        @if(emojiList | async; as emojis){
+        <ul class="active-emoji-list">
+            @for(emoji of emojis; track emoji){
+                <li class="emoji-item" [style.--emoji-code]="`'${emoji.codePoint}'`"></li>
+            }
+        </ul>
+        }
+        <ul class="emoji-categories-list">
+            @for(category of emojiCategories; track category){
+                <li class="category-item" [style.--emoji-code]="`'${category.code}'`" (click)="setActiveCategory(category.category)"></li>
+            }
+        </ul>
+    </div>
+</div>

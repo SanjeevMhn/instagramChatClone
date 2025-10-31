@@ -1,0 +1,28 @@
+.emoji-card-container{
+    width: 20em;
+    .active-emoji-category-container{
+        .active-emoji-category-name{
+            text-transform: capitalize;
+        }
+
+        .active-emoji-list .emoji-item,
+        .emoji-categories-list .category-item{
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            --size: 1.4em;
+            aspect-ratio: 1 / 1;
+            &:after{
+                content: var(--emoji-code);
+                font-size: var(--size);
+            }
+        }
+
+        .active-emoji-list{
+            display: grid;
+            grid-template-columns: repeat(8,1fr);
+            list-style-type: none;
+        }
+    }
+}
