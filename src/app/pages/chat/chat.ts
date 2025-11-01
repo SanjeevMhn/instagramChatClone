@@ -24,6 +24,8 @@ import { Emoji } from '../../services/emoji/emoji';
 import { ChatMessageItem } from '../../components/chat-message-item/chat-message-item';
 import { tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { EmojiListCard } from "../../components/emoji-list-card/emoji-list-card";
+import { ClickOutside } from '../../directives/click-outside/click-outside';
 
 export type ChatMessageItemType = {
   id: number;
@@ -37,7 +39,7 @@ export type ChatMessageItemType = {
 
 @Component({
   selector: 'app-chat',
-  imports: [LucideAngularModule, ReactiveFormsModule, ChatMessageItem, AsyncPipe],
+  imports: [LucideAngularModule, ReactiveFormsModule, ChatMessageItem, AsyncPipe, EmojiListCard, ClickOutside],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
@@ -263,5 +265,19 @@ export class Chat {
       this.handleHideUnsendDialog()
       this.unsendMessageId = undefined
     }
+  }
+
+  showEmojiListCard = false
+
+  handleShowEmojiListCard(state: boolean){
+    this.showEmojiListCard = state
+  }
+
+  setEmojiToInput(emoji: string){
+    let emojiCodeHex = emoji.split('\\')[1]
+    let finalEmoji = String.fromCodePoint(parseInt(emojiCodeHex, 16)).toString()
+    this.chatInputRef.nativeElement.focus()
+    this.chatForm.get('message')?.setValue(finalEmoji + ' ')
+    this.handleShowEmojiListCard(false)
   }
 }

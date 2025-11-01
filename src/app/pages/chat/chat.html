@@ -90,9 +90,12 @@
       </div>
       }
       <form [formGroup]="chatForm" class="form" (submit)="onChatSend()">
-        <span class="icon-container smile">
+        @if(showEmojiListCard){
+          <app-emoji-list-card class="emoji-list-card" appClickOutside (clickOutside)="handleShowEmojiListCard(false)" (listEmojiAction)="setEmojiToInput($event)" />
+        }
+        <button type="button" class="icon-container smile" (click)="handleShowEmojiListCard(true)">
           <lucide-angular [img]="emoji"></lucide-angular>
-        </span>
+        </button>
         <input
           type="text"
           name=""
