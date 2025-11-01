@@ -16,10 +16,14 @@
     }
     .actions {
       .emoji-btn {
-        .base-emoji-list {
+        .base-emoji-list{
           /* left: 0; */
           left: 50%;
           transform: translateX(-50%);
+        }
+        .emoji-list-card{
+          left: 0;
+          width: 100%;
         }
       }
       .more-opts-btn {
@@ -47,10 +51,14 @@
       order: 1;
       .emoji-btn {
         order: 2;
-        .base-emoji-list {
+        .base-emoji-list{
           /* right: 0; */
           left: 50%;
           transform: translateX(-70%);
+        }
+        .emoji-list-card{
+          right: 0;
+          width: 100%;
         }
       }
       .more-opts-btn {
@@ -155,6 +163,10 @@
     }
     .emoji-btn {
       /* position: relative; */
+      .emoji-list-card{
+        position: absolute;
+        z-index: 999;
+      }
       .base-emoji-list {
         padding: 1em 1.4em;
         border-radius: 100vh;
@@ -243,7 +255,8 @@
 
   &:hover,
   &:has(.actions .emoji-btn .base-emoji-list.show),
-  &:has(.actions .more-opts-btn .more-opts-list.show) {
+  &:has(.actions .more-opts-btn .more-opts-list.show),
+  &:has(.actions .emoji-btn .emoji-list-card){
     .actions {
       display: flex;
     }

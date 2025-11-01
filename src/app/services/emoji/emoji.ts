@@ -24,6 +24,22 @@ export class Emoji {
     return this.http.get(`${this.BASE_URL}categories?access_key=${this.API_TOKEN}`);
   }
 
+  getSearchEmojis(emoji: string) {
+    return this.http
+      .get<Array<EmojiType>>(`${this.BASE_URL}emojis?search=${emoji}&access_key=${this.API_TOKEN}`)
+      .pipe(
+        map((data) =>
+          data.reduce((acc: Array<EmojiType>, curr: EmojiType) => {
+            acc.push({
+              ...curr,
+              codePoint: `\\${curr.codePoint.split(' ')[0]}`,
+            });
+            return acc;
+          }, [])
+        )
+      );
+  }
+
   getEmojisInCategory(category: string) {
     return this.http
       .get<Array<EmojiType>>(`${this.BASE_URL}categories/${category}?access_key=${this.API_TOKEN}`)

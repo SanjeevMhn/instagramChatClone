@@ -8,10 +8,12 @@ import {
   Reply,
   Smile,
 } from 'lucide-angular';
+import { EmojiListCard } from '../emoji-list-card/emoji-list-card';
+import { ClickOutside } from '../../directives/click-outside/click-outside';
 
 @Component({
   selector: 'app-chat-message-item',
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, EmojiListCard, ClickOutside],
   templateUrl: './chat-message-item.html',
   styleUrl: './chat-message-item.css',
 })
@@ -19,8 +21,8 @@ export class ChatMessageItem {
   message = input<ChatMessageItemType>();
   emojiAction = output<ChatMessageItemType>();
   replyAction = output<ChatMessageItemType>();
-  editAction = output<ChatMessageItemType>()
-  showUnsendDialog = output<number>()
+  editAction = output<ChatMessageItemType>();
+  showUnsendDialog = output<number>();
 
   emoji = Smile;
   reply = Reply;
@@ -30,6 +32,7 @@ export class ChatMessageItem {
   baseEmojiList: Array<string> = ['\\1F497', '\\1F602', '\\1F62E', '\\1F622', '\\1F621', '\\1F44D'];
   showBaseEmojiList = false;
   showMoreOpts = false;
+  showEmojiListCard = false;
 
   @HostListener('document:keydown', ['$event'])
   handleEscKey(event: KeyboardEvent) {
@@ -37,6 +40,7 @@ export class ChatMessageItem {
       event.preventDefault();
       this.showBaseEmojiList = false;
       this.handleHideMoreOpts();
+      this.showEmojiListCard = false;
     }
   }
 
@@ -85,8 +89,9 @@ export class ChatMessageItem {
         emoji: emoji,
       };
       this.emojiAction.emit(updatedMessage);
+      this.hideBaseEmojiList();
+      this.hideEmojiListCard()
     }
-    this.hideBaseEmojiList();
   }
 
   removeEmoji() {
@@ -101,16 +106,25 @@ export class ChatMessageItem {
     this.replyAction.emit(message);
   }
 
-  handleEditMessage(message: ChatMessageItemType){
-    this.editAction.emit(message)
+  handleEditMessage(message: ChatMessageItemType) {
+    this.editAction.emit(message);
   }
 
-  handleShowUnsendDialog(id: number){
-    this.showUnsendDialog.emit(id)
-    this.handleHideMoreOpts()
+  handleShowUnsendDialog(id: number) {
+    this.showUnsendDialog.emit(id);
+    this.handleHideMoreOpts();
   }
 
-  async makeCopy(message: string){
-    await navigator.clipboard.writeText(message)
+  async makeCopy(message: string) {
+    await navigator.clipboard.writeText(message);
+  }
+
+  handleShowEmojiListCard() {
+    this.showEmojiListCard = true;
+    this.showBaseEmojiList = false;
+  }
+
+  hideEmojiListCard(){
+    this.showEmojiListCard = false;
   }
 }

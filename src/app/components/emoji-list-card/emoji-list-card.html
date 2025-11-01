@@ -1,24 +1,58 @@
 <div class="emoji-card-container">
+  <div class="inner-container">
     <form class="search-emoji-form">
-        <input type="text" name="" id="" class="form-control" placeholder="Search">
+      <span class="icon-container search">
+        <lucide-angular [img]="searchIcon" />
+      </span>
+      <input
+        type="text"
+        name=""
+        id=""
+        class="form-control"
+        placeholder="Search"
+        #searchInput
+        (input)="onEmojiSearch($event)"
+      />
+      @if(hideForSearchItem){
+        <button type="button" class="reset icon-container" (click)="resetSearchEmoji()">
+          <lucide-angular [img]="closeIcon" />
+        </button>
+      }
     </form>
-    <div class="active-emoji-category-container">
-        <h2 class="active-emoji-category-name">
-            @if(activeCategory | async; as category){
-                {{category | kebabCaseToText}}
-            }
-        </h2>
-        @if(emojiList | async; as emojis){
-        <ul class="active-emoji-list">
-            @for(emoji of emojis; track emoji){
-                <li class="emoji-item" [style.--emoji-code]="`'${emoji.codePoint}'`"></li>
-            }
-        </ul>
+    <div class="active-emoji-category-container" [class]="showLoader ? 'loading' : ''">
+      @if(!hideForSearchItem){
+      <h2 class="active-emoji-category-name">
+        @if(activeCategory | async; as category){
+        {{ category | kebabCaseToText }}
         }
-        <ul class="emoji-categories-list">
-            @for(category of emojiCategories; track category){
-                <li class="category-item" [style.--emoji-code]="`'${category.code}'`" (click)="setActiveCategory(category.category)"></li>
-            }
-        </ul>
+      </h2>
+      }
+
+
+      @if(getEmojiList | async; as emojis){
+      <ul class="active-emoji-list">
+        @for(emoji of emojis; track emoji){
+        <li
+          class="emoji-item"
+          [style.--emoji-code]="`'${emoji.codePoint}'`"
+          (click)="sendEmoji(emoji.codePoint)"
+        ></li>
+        }
+      </ul>
+      }
     </div>
+  </div>
+  @if(!hideForSearchItem) {
+  <ul class="emoji-categories-list">
+    @for(category of emojiCategories; track category){
+    <li
+      class="category-item"
+      [class.active]="(activeCategory | async) == category.category"
+      [style.--emoji-code]="`'${category.code}'`"
+      (click)="setActiveCategory(category.category)"
+    ></li>
+    }
+  </ul>
+  }
+
 </div>

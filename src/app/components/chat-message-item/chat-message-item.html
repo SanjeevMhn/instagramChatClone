@@ -13,6 +13,14 @@
           <button type="button" class="icon-container react" (click)="getBaseEmojis()">
             <lucide-angular [img]="emoji"></lucide-angular>
           </button>
+          @if(showEmojiListCard){
+          <app-emoji-list-card
+            class="emoji-list-card"
+            appClickOutside
+            (clickOutside)="hideEmojiListCard()"
+            (listEmojiAction)="addEmoji($event)"
+          />
+          }
           <ul class="base-emoji-list" [class]="showBaseEmojiList ? 'show' : 'hide'">
             @for(emoji of baseEmojiList; track $index){
             <li
@@ -21,8 +29,8 @@
               (click)="addEmoji(emoji)"
             ></li>
             }
-            <li class="base-emoji-item">
-              <lucide-angular [img]="plus"></lucide-angular>
+            <li class="base-emoji-item" (click)="handleShowEmojiListCard()">
+              <lucide-angular [img]="plus" class="plus-icon"></lucide-angular>
             </li>
           </ul>
         </div>
